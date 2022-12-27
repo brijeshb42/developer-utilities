@@ -47,8 +47,8 @@ export function MainSidebar({
               className={clsx(
                 selectedPluginId === plugin.id
                   ? "bg-gray-200 dark:bg-gray-600 text-gray-900"
-                  : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-400 hover:text-gray-900",
-                "group flex items-center px-2 py-2 text-sm font-medium rounded-md dark:text-white"
+                  : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 dark:hover:text-white",
+                "group flex items-center px-2 py-2 text-sm font-medium rounded-md dark:text-white transition-colors duration-150"
               )}
             >
               <plugin.icon
@@ -56,7 +56,7 @@ export function MainSidebar({
                   selectedPluginId === plugin.id
                     ? "text-gray-500"
                     : "text-gray-400 group-hover:text-gray-500",
-                  "mr-3 h-6 w-6"
+                  "mr-3 h-6 w-6 dark:shadow-lg"
                 )}
                 aria-hidden="true"
               />
@@ -65,7 +65,9 @@ export function MainSidebar({
           ))}
         </div>
         <div className="flex flex-shrink px-2">
-          <p>Build: {import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA}</p>
+          <p>
+            Build: {import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA.substring(0, 7)}
+          </p>
         </div>
       </div>
     </div>
