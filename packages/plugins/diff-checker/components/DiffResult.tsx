@@ -87,29 +87,30 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
   return (
     <div className="flex flex-grow flex-col">
       <Toolbar label="Output">
-        <li className="flex gap-2">
+        <li className="flex gap-2 items-center">
           <span>Diff by: </span>
           {MODE_OPTIONS.map((opt) => (
             <label
               key={opt.mode}
-              className="flex gap-1"
+              className="flex gap-1 label cursor-pointer"
               htmlFor={`${opt.mode}-mode`}
             >
               <input
                 name="diff-mode"
                 id={`${opt.mode}-mode`}
                 type="radio"
+                className="radio radio-info radio-sm"
                 value={opt.mode}
                 checked={diffMode === opt.mode}
                 onChange={handleRadio}
               />
-              {opt.label}
+              <span className="label-text">{opt.label}</span>
             </label>
           ))}
         </li>
         <li className="border-l pl-2">
           <label htmlFor="ignore-case" className="flex gap-2">
-            Ignore Case
+            <span className="label-text">Ignore Case</span>
             <input
               id="ignore-case"
               type="checkbox"

@@ -29,7 +29,7 @@ export function Toolbar({
       )}
     >
       {label && <span>{label}</span>}
-      <ul className="flex gap-2">
+      <ul className="flex gap-2 items-center">
         {items.map((item) => (
           <li key={item.id}>
             <button

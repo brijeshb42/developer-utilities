@@ -35,7 +35,7 @@ export function App() {
 
   return (
     <Split gutterSize={2} sizes={sizes} className="flex h-screen w-screen">
-      <div className="bg-gray-100 h-full overflow-hidden">
+      <div className="h-full overflow-hidden">
         <MainSidebar
           iconUrl={iconUrl}
           selectedPluginId={selectedPluginId}
@@ -44,7 +44,7 @@ export function App() {
         />
       </div>
       <div className="h-full w-full p-2">
-        <div className="h-full border border-dashed rounded-sm">
+        <div className="h-full border border-dashed dark:border-gray-600 rounded-sm">
           <Suspense
             fallback={
               <div className="flex h-full w-full items-center justify-center">

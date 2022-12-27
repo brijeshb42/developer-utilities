@@ -31,6 +31,9 @@ export function StorageProvider({ children }: PropsWithChildren) {
 
     return val as typeof fallback;
   }, []);
+  const del = useCallback((key: string) => {
+    delete data.current[key];
+  }, []);
 
   const flushStorage = useCallback(() => {
     const strData = JSON.stringify(data.current);
@@ -46,7 +49,7 @@ export function StorageProvider({ children }: PropsWithChildren) {
   const scopedStorage = useCallback(
     (prefix: string) => {
       if (!prefix) {
-        return { getValue, setValue };
+        return { getValue, setValue, del };
       }
       return {
         getValue(key, fallback) {
@@ -55,14 +58,17 @@ export function StorageProvider({ children }: PropsWithChildren) {
         setValue(key, value) {
           setValue(`${prefix}:${key}`, value);
         },
+        del(key) {
+          del(`${prefix}:${key}`);
+        },
       } as StorageContextType;
     },
-    [getValue, setValue]
+    [getValue, setValue, del]
   );
 
   const contextValue = useMemo(
-    () => ({ getValue, setValue, scopedStorage }),
-    [getValue, setValue, scopedStorage]
+    () => ({ getValue, setValue, scopedStorage, del }),
+    [getValue, setValue, scopedStorage, del]
   );
 
   return (

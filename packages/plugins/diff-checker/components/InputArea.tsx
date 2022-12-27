@@ -15,6 +15,7 @@ export function InputArea({
   placeholder,
   label,
   className,
+  autoFocus,
   children,
 }: InputAreaProps) {
   const textInputRef = useRef<HTMLTextAreaElement>(null);
@@ -51,7 +52,7 @@ export function InputArea({
       </Toolbar>
       <TextInput
         id={`${id}-text-input`}
-        autoFocus
+        autoFocus={autoFocus}
         ref={textInputRef}
         value={value}
         onChange={onChange}

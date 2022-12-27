@@ -5,6 +5,7 @@ export type GetValue = <T>(key: string, fallback: T) => T;
 export type StorageContextType = {
   getValue?: GetValue;
   setValue?: (key: string, value: unknown) => void;
+  del?: (key: string) => void;
   scopedStorage?: (prefix: string) => StorageContextType;
 };
 
