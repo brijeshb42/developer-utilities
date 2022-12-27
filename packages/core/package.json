@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "devu-core",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -8,9 +8,14 @@
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "dependencies": {
-    "react": "^18.2.0"
+    "@uiw/react-codemirror": "^4.19.4",
+    "clsx": "^1.2.1",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-split": "^2.0.14"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/react": "^18.0.26",
     "eslint": "^8.30.0",
     "eslint-config-custom": "*",

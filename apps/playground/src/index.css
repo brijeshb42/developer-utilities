@@ -1,0 +1,17 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.gutter {
+  @apply bg-gray-200;
+}
+
+.gutter-horizontal {
+  @apply cursor-ew-resize;
+}
+
+.gutter-vertical {
+  @apply cursor-ns-resize;
+}
