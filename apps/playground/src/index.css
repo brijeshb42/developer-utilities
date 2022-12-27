@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 .gutter {
-  @apply bg-gray-200;
+  @apply bg-gray-200 dark:bg-gray-900;
 }
 
 .gutter-horizontal {

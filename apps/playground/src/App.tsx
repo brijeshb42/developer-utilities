@@ -43,16 +43,18 @@ export function App() {
           setSelectedPluginId={setSelectedPluginId}
         />
       </div>
-      <div className="h-full w-full">
-        <Suspense
-          fallback={
-            <div className="flex h-full w-full items-center justify-center">
-              <LoadingIndicator />
-            </div>
-          }
-        >
-          {PluginComponent ? <PluginComponent /> : null}
-        </Suspense>
+      <div className="h-full w-full p-2">
+        <div className="h-full border border-dashed rounded-sm">
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <LoadingIndicator />
+              </div>
+            }
+          >
+            {PluginComponent ? <PluginComponent /> : null}
+          </Suspense>
+        </div>
       </div>
     </Split>
   );

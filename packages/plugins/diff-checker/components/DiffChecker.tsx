@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import Split from "react-split";
 import { DiffResult } from "./DiffResult";
-import { TextInput } from "./TextInput";
+import { InputArea } from "./InputArea";
 
 const verticalSizes = [30, 70];
 
@@ -17,36 +17,35 @@ export default function DiffChecker() {
     <Split
       className="flex flex-col h-full"
       direction="vertical"
+      gutterSize={5}
       sizes={verticalSizes}
     >
       <div className="flex flex-shrink flex-col">
-        <div className="flex justify-center">
-          <button
-            type="button"
-            className="border rounded-md inline-flex p-1 text-sm"
-            onClick={handleSwap}
+        <Split gutterSize={5} className="h-full flex" direction="horizontal">
+          <InputArea
+            className="relative"
+            placeholder="Initial Input"
+            label="Initial Input"
+            value={input1}
+            onChange={setInput1}
           >
-            Swap Inputs
-          </button>
-        </div>
-        <Split className="h-full flex" direction="horizontal">
-          <div>
-            <TextInput
-              value={input1}
-              onChange={setInput1}
-              placeholder="Initial Text"
-            />
-          </div>
-          <div>
-            <TextInput
-              value={input2}
-              onChange={setInput2}
-              placeholder="Updated Text"
-            />
-          </div>
+            <button
+              className="btn btn-xs btn-warning"
+              type="button"
+              onClick={handleSwap}
+            >
+              Swap
+            </button>
+          </InputArea>
+          <InputArea
+            placeholder="Changed Input"
+            label="Changed Input"
+            value={input2}
+            onChange={setInput2}
+          />
         </Split>
       </div>
-      <div className="h-full flex flex-grow overflow-hidden">
+      <div className="h-full flex flex-grow overflow-hidden p-2">
         <DiffResult input1={input1} input2={input2} />
       </div>
     </Split>

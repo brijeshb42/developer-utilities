@@ -1,6 +1,6 @@
-import { Toolbar } from "devu-core";
+import { Toolbar, useStorage } from "devu-core";
 import { diffChars, diffLines, diffWords } from "diff";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 type DiffResultProps = {
   input1: string;
@@ -18,12 +18,51 @@ const MODE_OPTIONS: { mode: DiffMode; label: string }[] = [
   { mode: "words", label: "Words" },
 ];
 
+function DiffToken({
+  added,
+  removed,
+  value,
+}: {
+  added?: boolean;
+  removed?: boolean;
+  value: string;
+}) {
+  if (added) {
+    return (
+      <ins className="bg-green-300 dark:bg-green-800 dark:text-white">
+        {value}
+      </ins>
+    );
+  }
+  if (removed) {
+    return (
+      <del className="bg-red-400 dark:bg-red-800 dark:text-white">{value}</del>
+    );
+  }
+  return <span className="text-gray-700 dark:text-white">{value}</span>;
+}
+
 export function DiffResult({ input1, input2 }: DiffResultProps) {
-  const [diffMode, setDiffMode] = useState<DiffMode>("chars");
-  const [ignoreCase, setIgnoreCase] = useState(false);
+  const { scopedStorage } = useStorage();
+  const storage = useMemo(() => scopedStorage?.("diff-checker"), []);
+  const [diffMode, setDiffMode] = useState<DiffMode>(
+    storage?.getValue?.("diff-mode", "chars") ?? "chars"
+  );
+  const [ignoreCase, setIgnoreCase] = useState(
+    storage?.getValue?.("ignore-case", false) ?? false
+  );
+
+  useEffect(() => {
+    storage?.setValue?.("diff-mode", diffMode);
+  }, [storage, diffMode]);
+
+  useEffect(() => {
+    storage?.setValue?.("ignore-case", ignoreCase);
+  }, [storage, ignoreCase]);
 
   const diff = useMemo(() => {
     switch (diffMode) {
+      case undefined:
       case "chars":
         return diffChars(input1, input2, {
           ignoreCase,
@@ -44,8 +83,6 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
   const handleRadio = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     setDiffMode(ev.target.value as DiffMode);
   }, []);
-
-  console.log(diff);
 
   return (
     <div className="flex flex-grow flex-col">
@@ -70,43 +107,33 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
             </label>
           ))}
         </li>
-        <li>
+        <li className="border-l pl-2">
           <label htmlFor="ignore-case" className="flex gap-2">
+            Ignore Case
             <input
               id="ignore-case"
               type="checkbox"
+              className="toggle"
               checked={ignoreCase}
               onChange={(ev) => setIgnoreCase(ev.target.checked)}
             />
-            Ignore Case
           </label>
         </li>
       </Toolbar>
-      <div className="flex flex-grow overflow-auto">
+      <div className="flex flex-grow overflow-auto border-t border-dashed mt-2 pt-2">
         {diff.length === 0 || (diff.length === 1 && diff[0].count === 0) ? (
           <p>No diff to show</p>
         ) : (
-          <pre>
-            {diff.map((change, index) => {
-              if (change.added) {
-                return (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <ins key={index} className="bg-green-200">
-                    {change.value}
-                  </ins>
-                );
-              }
-              if (change.removed) {
-                return (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <del key={index} className="bg-red-200">
-                    {change.value}
-                  </del>
-                );
-              }
-              // eslint-disable-next-line react/no-array-index-key
-              return <span key={index}>{change.value}</span>;
-            })}
+          <pre className="text-base">
+            {diff.map((change, index) => (
+              <DiffToken
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                value={change.value}
+                added={change.added}
+                removed={change.removed}
+              />
+            ))}
           </pre>
         )}
       </div>

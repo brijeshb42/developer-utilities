@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@radix-ui/react-icons": "^1.1.1",
-    "@radix-ui/react-select": "^1.1.2",
     "clsx": "^1.2.1",
     "devu-core": "*",
     "diff": "^5.1.0",

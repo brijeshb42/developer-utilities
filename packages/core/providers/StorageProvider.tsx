@@ -36,7 +36,7 @@ export function StorageProvider({ children }: PropsWithChildren) {
     const strData = JSON.stringify(data.current);
     localStorage.setItem("devutils", strData);
   }, []);
-  const throttledFlush = useRef(throttle(flushStorage, 1000));
+  const throttledFlush = useRef(throttle(flushStorage, 2000));
 
   const setValue = useCallback((key: string, value: unknown) => {
     data.current[key] = value;
