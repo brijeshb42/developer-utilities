@@ -65,6 +65,7 @@ export function InputArea({
             className="btn btn-xs btn-error btn-circle"
             aria-label="Clear Input"
             title="Clear Input"
+            disabled={!value}
             onClick={handleClear}
           >
             <Cross2Icon />

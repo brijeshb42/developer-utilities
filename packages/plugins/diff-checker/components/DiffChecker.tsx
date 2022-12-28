@@ -40,6 +40,7 @@ export default function DiffChecker() {
             <button
               className="btn btn-xs btn-warning"
               type="button"
+              disabled={!input1 && !input2}
               onClick={handleSwap}
             >
               Swap

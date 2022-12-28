@@ -15,7 +15,7 @@ export function DiffToken({
         tabIndex={-1}
         id={`diff-token-${count}`}
         data-diff-token="added"
-        className="bg-green-300 dark:bg-green-800 dark:text-white focus:bg-yellow-500 focus:text-black focus:animate-pulse"
+        className="bg-green-300 dark:bg-green-800 dark:text-white focus:bg-teal-300 focus:text-black focus:animate-pulse"
       >
         {value}
       </ins>
@@ -27,7 +27,7 @@ export function DiffToken({
         tabIndex={-1}
         id={`diff-token-${count}`}
         data-diff-token="removed"
-        className="bg-red-400 dark:bg-red-800 dark:text-white focus:bg-yellow-500 focus:text-black focus:animate-pulse"
+        className="bg-red-400 dark:bg-red-800 dark:text-white focus:bg-orange-500 focus:text-black focus:animate-pulse"
       >
         {value}
       </del>
