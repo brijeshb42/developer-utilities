@@ -1,10 +1,17 @@
-export function LoadingIndicator() {
+import clsx from "clsx";
+import { ComponentProps } from "react";
+
+export function LoadingIndicator({
+  className = "h-16 w-16",
+  ...rest
+}: ComponentProps<"svg">) {
   return (
     <svg
-      className="animate-spin -ml-1 mr-3 h-16 w-16 text-gray-400"
+      className={clsx("animate-spin -ml-1 mr-3 text-gray-400", className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
+      {...rest}
     >
       <circle
         className="opacity-25"

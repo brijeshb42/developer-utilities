@@ -30,7 +30,11 @@ export function DiffText({ changes }: { changes: Change[] }) {
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <pre ref={preRef} className="text-base" onClick={handleSelect}>
+    <pre
+      ref={preRef}
+      className="text-base whitespace-pre-wrap"
+      onClick={handleSelect}
+    >
       {changes.map((change, index) => (
         <DiffToken
           // eslint-disable-next-line react/no-array-index-key

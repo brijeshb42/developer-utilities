@@ -1,4 +1,4 @@
-import { Toolbar } from "devu-core";
+import { Toolbar, LoadingIndicator } from "devu-core";
 import {
   ChangeEvent,
   useCallback,
@@ -39,6 +39,8 @@ const KEYS = {
 };
 
 export function DiffResult({ input1, input2 }: DiffResultProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useRef(false);
   const [diffMode, setDiffMode] = useStorageValue(
     KEYS.diffMode,
     "chars" as DiffMode,
@@ -51,14 +53,27 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
   );
   const [diffs, setDiffs] = useState<Change[]>([]);
   const rpcWorkerRef = useRef<RpcWorker>();
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   const debouncedDiffer = useRef(
     debounce(
       (args: unknown[]) => {
         if (!rpcWorkerRef.current) {
           return;
         }
+        setDiffs([]);
         rpcWorkerRef.current.post("getDiff", args).then((result) => {
+          if (!isMounted.current) {
+            return;
+          }
           setDiffs(result as Change[]);
+          setIsLoading(false);
         });
       },
       500,
@@ -79,6 +94,7 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     debouncedDiffer.current([input1, input2, diffMode, ignoreCase]);
   }, [input1, input2, diffMode, ignoreCase]);
 
@@ -151,6 +167,11 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
   return (
     <div className="flex flex-grow flex-col">
       <Toolbar label="Output">
+        {isLoading && (
+          <li>
+            <LoadingIndicator className="h-4 w-4" />
+          </li>
+        )}
         {hasDiffs && (
           <li className="flex gap-2 items-center">
             <span>Copy:</span>
@@ -234,9 +255,9 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
           </label>
         </li>
       </Toolbar>
-      <div className="flex flex-grow overflow-auto border-t border-dashed mt-2 pt-2">
+      <div className="flex flex-grow flex-1 overflow-auto border-t border-dashed mt-2 pt-2">
         {diffs.length === 0 || (diffs.length === 1 && diffs[0].count === 0) ? (
-          <p>No diff to show</p>
+          <p>{isLoading ? "Calculating diff" : "No diff to show"}</p>
         ) : (
           <DiffText changes={diffs} />
         )}
