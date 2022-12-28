@@ -6,11 +6,16 @@
     "@radix-ui/react-icons": "^1.1.1",
     "clsx": "^1.2.1",
     "devu-core": "*",
+    "devu-utils": "*",
     "diff": "^5.1.0",
     "react": "^18.2.0",
-    "react-split": "^2.0.14"
+    "react-split": "^2.0.14",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/diff": "^5.0.2"
+  },
+  "scripts": {
+    "lint": "TIMING=1 eslint \"**/*.ts*\""
   }
 }

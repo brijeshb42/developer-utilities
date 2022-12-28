@@ -1,7 +1,7 @@
 import { DevUPlugin, LoadingIndicator } from "devu-core";
 import Split from "react-split";
 import DiffCheckerPlugin from "devu-diff-checker";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MainSidebar } from "./components/MainSidebar";
 import iconUrl from "./assets/320.png";
 
@@ -10,6 +10,7 @@ const sizes = [20, 80];
 const plugins: DevUPlugin[] = [DiffCheckerPlugin];
 
 export function App() {
+  const initialTitle = useRef("");
   const [selectedPluginId, setSelectedPluginId] = useState("");
 
   useEffect(() => {
@@ -24,14 +25,27 @@ export function App() {
       window.history.replaceState(undefined, "", `#${selectedPluginId}`);
     }
   }, [selectedPluginId]);
+  const currentPlugin = useMemo(
+    () => plugins.find((p) => p.id === selectedPluginId),
+    [selectedPluginId]
+  );
+
+  useEffect(() => {
+    if (currentPlugin) {
+      initialTitle.current = window.document.title;
+      window.document.title = currentPlugin.name;
+    } else {
+      window.document.title =
+        initialTitle.current || "DevU - Everyday utilities for developers";
+    }
+  }, [currentPlugin]);
 
   const PluginComponent = useMemo(() => {
-    const plugin = plugins.find((p) => p.id === selectedPluginId);
-    if (plugin) {
-      return lazy(plugin.load);
+    if (currentPlugin) {
+      return lazy(currentPlugin.load);
     }
     return null;
-  }, [selectedPluginId]);
+  }, [currentPlugin]);
 
   return (
     <Split gutterSize={2} sizes={sizes} className="flex h-screen w-screen">

@@ -1,34 +1,24 @@
-import { useStorage } from "devu-core";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
 import Split from "react-split";
+import { useStorageValue } from "devu-core/providers/StorageContext";
 import { DiffResult } from "./DiffResult";
 import { InputArea } from "./InputArea";
+import { pluginId } from "../diff-checker-plugin-utils";
 
 const verticalSizes = [30, 70];
 
+const KEYS = {
+  input1: "input1",
+  input2: "input2",
+};
+
 export default function DiffChecker() {
-  const { scopedStorage } = useStorage();
-  const storage = useMemo(() => scopedStorage?.("diff-checker"), []);
-  const [input1, setInput1] = useState(storage?.getValue?.("input1", "") ?? "");
-  const [input2, setInput2] = useState(storage?.getValue?.("input2", "") ?? "");
+  const [input1, setInput1] = useStorageValue(KEYS.input1, "", pluginId);
+  const [input2, setInput2] = useStorageValue(KEYS.input2, "", pluginId);
   const handleSwap = useCallback(() => {
     setInput1(input2);
     setInput2(input1);
   }, [input1, input2]);
-
-  useEffect(() => {
-    if (!input1) {
-      storage?.del?.("input1");
-    }
-    storage?.setValue?.("input1", input1);
-  }, [storage, input1]);
-
-  useEffect(() => {
-    if (!input2) {
-      storage?.del?.("input2");
-    }
-    storage?.setValue?.("input2", input2);
-  }, [storage, input2]);
 
   return (
     <Split
@@ -41,8 +31,8 @@ export default function DiffChecker() {
         <Split gutterSize={5} className="h-full flex" direction="horizontal">
           <InputArea
             className="relative"
-            placeholder="Initial Input"
-            label="Initial Input"
+            placeholder="Old Text"
+            label="Old Text"
             value={input1}
             onChange={setInput1}
             autoFocus
@@ -56,8 +46,8 @@ export default function DiffChecker() {
             </button>
           </InputArea>
           <InputArea
-            placeholder="Changed Input"
-            label="Changed Input"
+            placeholder="Changed Text"
+            label="Changed Text"
             value={input2}
             onChange={setInput2}
           />

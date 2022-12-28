@@ -66,7 +66,7 @@ export function MainSidebar({
         </div>
         <div className="flex flex-shrink px-2">
           <p>
-            Build: {import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA.substring(0, 7)}
+            Build: {import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA?.substring(0, 7)}
           </p>
         </div>
       </div>

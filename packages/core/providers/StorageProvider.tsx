@@ -10,6 +10,12 @@ import { GetValue, StorageContext, StorageContextType } from "./StorageContext";
 
 export function StorageProvider({ children }: PropsWithChildren) {
   const data = useRef<Record<string, unknown>>({});
+  const flushStorage = useCallback(() => {
+    const strData = JSON.stringify(data.current);
+    localStorage.setItem("devutils", strData);
+  }, []);
+  const throttledFlush = useRef(throttle(flushStorage, 2000));
+
   useEffect(() => {
     try {
       const dataStr = localStorage.getItem("devutils");
@@ -33,13 +39,8 @@ export function StorageProvider({ children }: PropsWithChildren) {
   }, []);
   const del = useCallback((key: string) => {
     delete data.current[key];
+    throttledFlush.current();
   }, []);
-
-  const flushStorage = useCallback(() => {
-    const strData = JSON.stringify(data.current);
-    localStorage.setItem("devutils", strData);
-  }, []);
-  const throttledFlush = useRef(throttle(flushStorage, 2000));
 
   const setValue = useCallback((key: string, value: unknown) => {
     data.current[key] = value;
