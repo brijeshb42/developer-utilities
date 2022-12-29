@@ -8,7 +8,7 @@ export type ClipboardContextType = {
     writePerm: boolean;
   };
   pasteFrom?: () => Promise<string>;
-  pasteTo?: (text: string) => Promise<boolean>;
+  pasteTo?: (text: string, mime?: string) => Promise<boolean>;
 };
 
 export const ClipboardContext = createContext<ClipboardContextType>({

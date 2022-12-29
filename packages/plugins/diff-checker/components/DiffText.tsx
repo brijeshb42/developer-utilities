@@ -1,9 +1,16 @@
 import { Change } from "diff";
 import { useCallback, useRef } from "react";
 import debounce from "lodash/debounce";
-import { DiffToken } from "./DiffToken";
+import clsx from "clsx";
+import { DiffToken, OutputFormat } from "./DiffToken";
 
-export function DiffText({ changes }: { changes: Change[] }) {
+export function DiffText({
+  changes,
+  outputFormat,
+}: {
+  changes: Change[];
+  outputFormat: OutputFormat;
+}) {
   const clickCount = useRef(0);
   const preRef = useRef<HTMLPreElement>(null);
   const debouncedClear = useRef(
@@ -32,7 +39,9 @@ export function DiffText({ changes }: { changes: Change[] }) {
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <pre
       ref={preRef}
-      className="text-base whitespace-pre-wrap"
+      className={clsx("text-base whitespace-pre-wrap", {
+        "whitespace-nowrap": outputFormat === "html",
+      })}
       onClick={handleSelect}
     >
       {changes.map((change, index) => (
@@ -40,6 +49,7 @@ export function DiffText({ changes }: { changes: Change[] }) {
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           count={index}
+          outputFormat={outputFormat}
           value={change.value}
           added={change.added}
           removed={change.removed}

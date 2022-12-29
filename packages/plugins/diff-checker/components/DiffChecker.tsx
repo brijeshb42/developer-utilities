@@ -31,8 +31,8 @@ export default function DiffChecker() {
         <Split gutterSize={5} className="h-full flex" direction="horizontal">
           <InputArea
             className="relative"
-            placeholder="Old Text"
-            label="Old Text"
+            placeholder="Initial Text"
+            label="Initial Text"
             value={input1}
             onChange={setInput1}
             autoFocus
