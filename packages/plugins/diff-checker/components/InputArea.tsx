@@ -24,6 +24,9 @@ export function InputArea({
 
   const handleDrop = useCallback((files: File[]) => {
     const file = files[0];
+    if (file.size / 1024 / 1024 > 1.5) {
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       if (reader.result) {
