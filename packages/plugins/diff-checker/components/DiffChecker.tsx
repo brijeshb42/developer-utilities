@@ -31,7 +31,7 @@ export default function DiffChecker() {
         <Split gutterSize={5} className="h-full flex" direction="horizontal">
           <InputArea
             className="relative"
-            placeholder="Initial Text"
+            placeholder="Paste or drop a file or click to open file chooser"
             label="Initial Text"
             value={input1}
             onChange={setInput1}
@@ -47,7 +47,7 @@ export default function DiffChecker() {
             </button>
           </InputArea>
           <InputArea
-            placeholder="Changed Text"
+            placeholder="Paste or drop a file or click to open file chooser"
             label="Changed Text"
             value={input2}
             onChange={setInput2}

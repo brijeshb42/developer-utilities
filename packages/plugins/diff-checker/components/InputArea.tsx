@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Toolbar, useClipboard } from "devu-core";
 import { ReactNode, useCallback, useId, useRef } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useDropzone } from "react-dropzone";
 import { TextInput, TextInputProps } from "./TextInput";
 
 type InputAreaProps = TextInputProps & {
@@ -20,6 +21,22 @@ export function InputArea({
 }: InputAreaProps) {
   const { supportData, pasteFrom } = useClipboard();
   const textInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleDrop = useCallback((files: File[]) => {
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        onChange(reader.result as string);
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    noClick: !!value,
+    onDrop: handleDrop,
+  });
   const handleClear = useCallback(() => {
     onChange("");
     textInputRef.current?.focus();
@@ -72,14 +89,26 @@ export function InputArea({
           </button>
         </li>
       </Toolbar>
-      <TextInput
-        id={`${id}-text-input`}
-        autoFocus={autoFocus}
-        ref={textInputRef}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
+      <input
+        {...getInputProps({
+          accept: "*/*",
+        })}
       />
+      <div
+        className={clsx("flex flex-col h-full w-full", {
+          "animate-pulse": isDragActive,
+        })}
+        {...getRootProps()}
+      >
+        <TextInput
+          id={`${id}-text-input`}
+          autoFocus={autoFocus}
+          ref={textInputRef}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+      </div>
       {children && (
         <div className="absolute translate-x-1/2 right-0 top-2">{children}</div>
       )}
