@@ -1,60 +1,35 @@
-import { Toolbar, LoadingIndicator, useClipboard } from "devu-core";
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  MouseEvent,
-} from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RpcWorker, toWorker } from "devu-utils/worker-utils/main-thread";
-import clsx from "clsx";
-import { Change } from "diff";
 import { debounce } from "lodash";
-import { useStorageValue } from "devu-core/providers/StorageContext";
+import {
+  ToolbarLeftRenderer,
+  ToolbarRightRenderer,
+  useClipboard,
+} from "devu-core";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 // eslint-disable-next-line import/no-unresolved
 import DiffWorker from "../utils/diff-worker?worker";
-import { pluginId } from "../diff-checker-plugin-utils";
-import { DiffText } from "./DiffText";
+import { Change, DiffText } from "./DiffText";
 import { DiffMode } from "../utils/diff-utils";
 import { OutputFormat } from "./DiffToken";
 
 type DiffResultProps = {
   input1: string;
   input2: string;
+  diffMode: DiffMode;
+  outputFormat: OutputFormat;
 };
 
-const MODE_OPTIONS: { mode: DiffMode; label: string }[] = [
-  {
-    mode: "chars",
-    label: "Characters",
-  },
-  { mode: "lines", label: "Lines" },
-  { mode: "words", label: "Words" },
-];
-
-const KEYS = {
-  diffMode: "diff-mode",
-  outputFormat: "output-format",
-};
-
-export function DiffResult({ input1, input2 }: DiffResultProps) {
+export function DiffResult({
+  input1,
+  input2,
+  diffMode,
+  outputFormat,
+}: DiffResultProps) {
   const { pasteTo } = useClipboard();
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(false);
-  const [diffMode, setDiffMode] = useStorageValue(
-    KEYS.diffMode,
-    "chars" as DiffMode,
-    pluginId
-  );
-  const [outputFormat, setOutputFormat] = useStorageValue(
-    KEYS.outputFormat,
-    "raw" as OutputFormat,
-    pluginId
-  );
   const [diffs, setDiffs] = useState<Change[]>([]);
   const rpcWorkerRef = useRef<RpcWorker>();
 
@@ -123,17 +98,6 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
     currentFocussedElement.current = -1;
   }, [diffs]);
 
-  const handleSetOutputFormat = useCallback(
-    (ev: MouseEvent<HTMLButtonElement>) => {
-      const { type } = (ev.target as HTMLButtonElement).dataset;
-      if (!type) {
-        return;
-      }
-      setOutputFormat(type as OutputFormat);
-    },
-    []
-  );
-
   const handleNext = useCallback(() => {
     if (
       currentFocussedElement.current >=
@@ -174,10 +138,6 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
     });
   }, [focussableItemsCount]);
 
-  const handleModeChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
-    setDiffMode(ev.target.value as DiffMode);
-  }, []);
-
   const handleCopy = useCallback(async () => {
     if (outputFormat === "raw") {
       await pasteTo?.(diffs.map((d) => d.value).join(""));
@@ -201,123 +161,41 @@ export function DiffResult({ input1, input2 }: DiffResultProps) {
     }
   }, [diffs, outputFormat]);
 
-  const focussableDiffsCount =
-    focussableItemsCount.added + focussableItemsCount.removed;
-  const hasDiffs = focussableDiffsCount > 0;
-
   return (
     <div className="flex flex-grow flex-col h-full w-full">
-      <Toolbar label="Output">
-        {isLoading && (
-          <li>
-            <LoadingIndicator className="h-4 w-4" />
-          </li>
-        )}
-        <li className="flex gap-2 items-center">
-          <span>Diff by: </span>
-          {MODE_OPTIONS.map((opt) => (
-            <label
-              key={opt.mode}
-              className="flex gap-1 label cursor-pointer"
-              htmlFor={`${opt.mode}-mode`}
-            >
-              <input
-                name="diff-mode"
-                id={`${opt.mode}-mode`}
-                type="radio"
-                className="radio radio-info radio-sm"
-                value={opt.mode}
-                checked={diffMode === opt.mode}
-                onChange={handleModeChange}
-              />
-              <span className="label-text">{opt.label}</span>
-            </label>
-          ))}
-        </li>
-        {hasDiffs && (
-          <>
-            <li
-              className={clsx("flex gap-2 items-center", {
-                "pointer-events-none": outputFormat !== "raw",
-              })}
-            >
-              <button
-                type="button"
-                className="btn btn-xs btn-square"
-                aria-label="Goto previous"
-                disabled={outputFormat !== "raw"}
-                onClick={handlePrevious}
-              >
-                <ChevronLeftIcon />
-              </button>
-              <span>Jump</span>
-              <button
-                type="button"
-                className="btn btn-xs btn-square"
-                onClick={handleNext}
-                disabled={outputFormat !== "raw"}
-                aria-label="Goto next"
-              >
-                <ChevronRightIcon />
-              </button>
-            </li>
-            <li className="flex gap-2 items-center">
-              <span>Format</span>
-              <div className="btn-group">
-                <button
-                  data-type="raw"
-                  type="button"
-                  className={clsx("btn btn-xs", {
-                    "btn-active": outputFormat === "raw",
-                  })}
-                  onClick={handleSetOutputFormat}
-                >
-                  Raw
-                </button>
-                <button
-                  data-type="html"
-                  type="button"
-                  className={clsx("btn btn-xs", {
-                    "btn-active": outputFormat === "html",
-                  })}
-                  onClick={handleSetOutputFormat}
-                >
-                  HTML
-                </button>
-                {/* <button
-                  data-type="patch"
-                  type="button"
-                  className="btn btn-xs btn-accent"
-                >
-                  Patch
-                </button> */}
-              </div>
-              <button type="button" className="btn btn-xs" onClick={handleCopy}>
-                Copy
-              </button>
-            </li>
-          </>
-        )}
-        {/* <li className="border-l pl-2">
-          <label htmlFor="ignore-case" className="flex gap-2">
-            <span className="label-text">Ignore Case</span>
-            <input
-              id="ignore-case"
-              type="checkbox"
-              className="toggle"
-              checked={ignoreCase}
-              onChange={(ev) => setIgnoreCase(ev.target.checked)}
-            />
-          </label>
-        </li> */}
-      </Toolbar>
       <div className="flex flex-grow flex-1 overflow-auto border-t border-dashed mt-2 pt-2">
-        {diffs.length === 0 || (diffs.length === 1 && diffs[0].count === 0) ? (
+        {diffs.length === 0 ? (
           <p>{isLoading ? "Calculating diff" : "No diff to show"}</p>
         ) : (
           <DiffText outputFormat={outputFormat} changes={diffs} />
         )}
       </div>
+      <ToolbarLeftRenderer className="flex items-center gap-2">
+        <button
+          type="button"
+          className="btn btn-xs btn-square"
+          aria-label="Goto previous"
+          disabled={outputFormat !== "raw"}
+          onClick={handlePrevious}
+        >
+          <ChevronLeftIcon />
+        </button>
+        <span>Jump</span>
+        <button
+          type="button"
+          className="btn btn-xs btn-square"
+          onClick={handleNext}
+          disabled={outputFormat !== "raw"}
+          aria-label="Goto next"
+        >
+          <ChevronRightIcon />
+        </button>
+      </ToolbarLeftRenderer>
+      <ToolbarRightRenderer>
+        <button type="button" className="btn btn-xs" onClick={handleCopy}>
+          Copy
+        </button>
+      </ToolbarRightRenderer>
     </div>
   );
 }

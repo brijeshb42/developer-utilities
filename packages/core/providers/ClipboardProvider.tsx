@@ -2,7 +2,6 @@ import type ClipboardJS from "clipboard";
 import {
   PropsWithChildren,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -108,5 +107,3 @@ export function ClipboardProvider({ children }: PropsWithChildren) {
     </ClipboardContext.Provider>
   );
 }
-
-export const useClipboard = () => useContext(ClipboardContext);

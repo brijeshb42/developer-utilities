@@ -1,4 +1,4 @@
-import { DevUPlugin, LoadingIndicator } from "devu-core";
+import { DevUPlugin, LoadingIndicator, MainSchemaUI } from "devu-core";
 import Split from "react-split";
 import DiffCheckerPlugin from "devu-diff-checker";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -25,6 +25,7 @@ export function App() {
       window.history.replaceState(undefined, "", `#${selectedPluginId}`);
     }
   }, [selectedPluginId]);
+
   const currentPlugin = useMemo(
     () => plugins.find((p) => p.id === selectedPluginId),
     [selectedPluginId]
@@ -41,7 +42,7 @@ export function App() {
   }, [currentPlugin]);
 
   const PluginComponent = useMemo(() => {
-    if (currentPlugin) {
+    if (currentPlugin?.load) {
       return lazy(currentPlugin.load);
     }
     return null;
@@ -66,7 +67,15 @@ export function App() {
               </div>
             }
           >
-            {PluginComponent ? <PluginComponent /> : null}
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {currentPlugin?.schema ? (
+              <MainSchemaUI
+                key={currentPlugin.id}
+                schema={currentPlugin.schema}
+              />
+            ) : PluginComponent ? (
+              <PluginComponent />
+            ) : null}
           </Suspense>
         </div>
       </div>

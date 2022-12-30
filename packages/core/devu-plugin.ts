@@ -1,4 +1,5 @@
-import { ComponentProps, ComponentType, lazy, ReactNode } from "react";
+import { ComponentProps, ComponentType, lazy } from "react";
+import { Schema } from "./schema/schema";
 
 export type PanelDirection = "horizontal" | "vertical";
 
@@ -20,7 +21,6 @@ export interface DevUPlugin {
   category?: "formatter" | "other";
   name: string;
   icon: ComponentType<ComponentProps<"svg">>;
-  load: Parameters<typeof lazy>[0];
-  panels?: Panel;
-  renderPanel?: (panelId: string) => ReactNode;
+  load?: Parameters<typeof lazy>[0];
+  schema?: Schema;
 }

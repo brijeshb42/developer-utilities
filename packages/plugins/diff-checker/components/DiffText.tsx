@@ -1,8 +1,13 @@
-import { Change } from "diff";
 import { useCallback, useRef } from "react";
 import debounce from "lodash/debounce";
 import clsx from "clsx";
 import { DiffToken, OutputFormat } from "./DiffToken";
+
+export type Change = {
+  added?: boolean;
+  removed?: boolean;
+  value: string;
+};
 
 export function DiffText({
   changes,

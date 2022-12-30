@@ -6,3 +6,8 @@ export { StorageProvider } from "./providers/StorageProvider";
 export * from "./components/OverflowScroll";
 export * from "./components/LoadingIndicator";
 export * from "./components/Toolbar";
+export { MainSchemaUI } from "./components/schema-renderer/MainSchemaUI";
+export {
+  ToolbarLeftRenderer,
+  ToolbarRightRenderer,
+} from "./components/schema-renderer/ToolbarPortalRenderer";

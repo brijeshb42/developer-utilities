@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { DevUPlugin } from "devu-core";
-import { useCallback, MouseEvent } from "react";
+import { useCallback, MouseEvent, startTransition } from "react";
 
 type MainSidebarProps = {
   iconUrl: string;
@@ -19,7 +19,9 @@ export function MainSidebar({
     (ev: MouseEvent) => {
       ev.preventDefault();
       const pluginId = (ev.target as HTMLAnchorElement).href.split("#")[1];
-      setSelectedPluginId(pluginId);
+      startTransition(() => {
+        setSelectedPluginId(pluginId);
+      });
     },
     [setSelectedPluginId]
   );

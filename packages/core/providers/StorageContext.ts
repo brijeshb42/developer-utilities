@@ -1,39 +1,24 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import noop from "lodash/noop";
+import { createContext, useContext } from "react";
 
-export type GetValue = <T>(key: string, fallback: T) => T;
+export type GetValueFallback = <T>(key: string, fallback: T) => T;
 
 export type StorageContextType = {
-  getValue?: GetValue;
-  setValue?: (key: string, value: unknown) => void;
-  del?: (key: string) => void;
-  scopedStorage?: (prefix: string) => StorageContextType;
+  getItem: (key: string) => unknown;
+  // getItemFallback: GetValueFallback;
+  setItem: (key: string, value: unknown) => void;
+  removeItem: (key: string) => void;
+  scopedStorage: (prefix: string) => Omit<StorageContextType, "scopedStorage">;
 };
 
-export const StorageContext = createContext<StorageContextType>({});
+const DEFAULT: StorageContextType = {
+  getItem: (key: string) => key,
+  // getItemFallback: <T>(key: string, fallback: T) => fallback,
+  setItem: noop,
+  removeItem: noop,
+  scopedStorage: () => DEFAULT,
+};
+
+export const StorageContext = createContext<StorageContextType>(DEFAULT);
 
 export const useStorage = () => useContext(StorageContext);
-
-export function useStorageValue<T>(
-  key: string,
-  defaultValue: T,
-  scope?: string
-) {
-  const storage = useStorage();
-  const finalStorage = useMemo(() => {
-    if (!scope) {
-      return storage;
-    }
-    return storage.scopedStorage?.(scope);
-  }, [scope, storage]);
-  const [val, setVal] = useState(
-    finalStorage?.getValue?.(key, defaultValue) ?? defaultValue
-  );
-  useEffect(() => {
-    if (val === defaultValue) {
-      finalStorage?.del?.(key);
-    } else {
-      finalStorage?.setValue?.(key, val);
-    }
-  }, [val, finalStorage, key]);
-  return [val, setVal] as const;
-}
