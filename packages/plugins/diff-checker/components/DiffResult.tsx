@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RpcWorker, toWorker } from "devu-utils/worker-utils/main-thread";
 import { debounce } from "lodash";
 import {
+  LoadingIndicator,
   ToolbarLeftRenderer,
   ToolbarRightRenderer,
   useClipboard,
@@ -10,8 +11,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 // eslint-disable-next-line import/no-unresolved
 import DiffWorker from "../utils/diff-worker?worker";
-import { Change, DiffText } from "./DiffText";
-import { DiffMode } from "../utils/diff-utils";
+import { DiffText } from "./DiffText";
+import { Diff, DiffMode } from "../utils/diff-utils";
 import { OutputFormat } from "./DiffToken";
 
 type DiffResultProps = {
@@ -30,7 +31,7 @@ export function DiffResult({
   const { pasteTo } = useClipboard();
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(false);
-  const [diffs, setDiffs] = useState<Change[]>([]);
+  const [diffs, setDiffs] = useState<Diff[]>([]);
   const rpcWorkerRef = useRef<RpcWorker>();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export function DiffResult({
           if (!isMounted.current) {
             return;
           }
-          setDiffs(result as Change[]);
+          setDiffs(result as Diff[]);
           setIsLoading(false);
         });
       },
@@ -142,22 +143,9 @@ export function DiffResult({
     if (outputFormat === "raw") {
       await pasteTo?.(diffs.map((d) => d.value).join(""));
     } else if (outputFormat === "html") {
-      const text = `<pre>${diffs
-        .map((d) => {
-          if (d.added) {
-            return `<ins style="background-color: green">${d.value
-              .split("\n")
-              .join("<br>\n")}</ins>`;
-          }
-          if (d.removed) {
-            return `<del style="background-color: red">${d.value
-              .split("\n")
-              .join("<br>\n")}</del>`;
-          }
-          return d.value.split("\n").join("<br>\n");
-        })
-        .join("")}</pre>`;
-      await pasteTo?.(text, "text/html");
+      let res = await rpcWorkerRef.current?.post("getHtml", diffs);
+      res = `<pre>${(res as string).replace(/&para;/g, "")}</pre>`;
+      await pasteTo?.(res as string);
     }
   }, [diffs, outputFormat]);
 
@@ -171,6 +159,7 @@ export function DiffResult({
         )}
       </div>
       <ToolbarLeftRenderer className="flex items-center gap-2">
+        {isLoading && <LoadingIndicator className="h-4 w-4" />}
         <button
           type="button"
           className="btn btn-xs btn-square"

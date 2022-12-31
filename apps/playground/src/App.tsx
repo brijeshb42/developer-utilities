@@ -47,6 +47,9 @@ export function App() {
     }
     return null;
   }, [currentPlugin]);
+  const element = currentPlugin?.schema ? (
+    <MainSchemaUI key={currentPlugin.id} schema={currentPlugin.schema} />
+  ) : null;
 
   return (
     <Split gutterSize={2} sizes={sizes} className="flex h-screen w-screen">
@@ -60,22 +63,8 @@ export function App() {
       </div>
       <div className="h-full w-full p-2">
         <div className="h-full border border-dashed dark:border-gray-600 rounded-sm">
-          <Suspense
-            fallback={
-              <div className="flex h-full w-full items-center justify-center">
-                <LoadingIndicator />
-              </div>
-            }
-          >
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {currentPlugin?.schema ? (
-              <MainSchemaUI
-                key={currentPlugin.id}
-                schema={currentPlugin.schema}
-              />
-            ) : PluginComponent ? (
-              <PluginComponent />
-            ) : null}
+          <Suspense fallback={<LoadingIndicator />}>
+            {PluginComponent ? <PluginComponent /> : element}
           </Suspense>
         </div>
       </div>

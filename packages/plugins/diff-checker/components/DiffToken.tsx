@@ -43,19 +43,26 @@ export function DiffToken({
   if (outputFormat === "html") {
     if (added) {
       return (
-        <span>{`<ins style="background-color: green">${value
-          .split("\n")
-          .join("<br>")}</ins>`}</span>
+        <>
+          <span>{`<ins style="background-color: green">${value}</ins>`}</span>
+          <br />
+        </>
       );
     }
     if (removed) {
       return (
-        <span>{`<del style="background-color: red">${value
-          .split("\n")
-          .join("<br>")}</del>`}</span>
+        <>
+          <span>{`<del style="background-color: red">${value}</del>`}</span>
+          <br />
+        </>
       );
     }
-    return <span>{value.split("\n").join("\n<br>")}</span>;
+    return (
+      <>
+        <span>{`<span>${value}</span>`}</span>
+        <br />
+      </>
+    );
   }
   return null;
 }

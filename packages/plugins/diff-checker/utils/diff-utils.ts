@@ -1,6 +1,7 @@
 import {
   DIFF_DELETE,
   DIFF_INSERT,
+  DIFF_EQUAL,
   diff_match_patch as DiffMatchPatch,
   Diff as DiffBase,
 } from "diff-match-patch";
@@ -76,6 +77,18 @@ class Dmp extends DiffMatchPatch {
   }
 }
 
+function diffToDmpDiff(diffs: Diff[]): DiffBase[] {
+  return diffs.map((diff) => {
+    if (diff.added) {
+      return [DIFF_INSERT, diff.value];
+    }
+    if (diff.removed) {
+      return [DIFF_DELETE, diff.value];
+    }
+    return [DIFF_EQUAL, diff.value];
+  });
+}
+
 function dmpDiffToDiff(diffs: DiffBase[]): Diff[] {
   return diffs.map((diff) => ({
     added: diff[0] === DIFF_INSERT ? true : undefined,
@@ -113,6 +126,18 @@ function diffWordsMode(input1: string, input2: string): Diff[] {
   dmp.diff_charsToLines_(diffs, lineArray);
   dmp.diff_cleanupSemantic(diffs);
   return dmpDiffToDiff(diffs);
+}
+
+export function getHtml(diffs: Diff[]) {
+  const dmpDiffs = diffToDmpDiff(diffs);
+  const dmp = new Dmp();
+  return dmp.diff_prettyHtml(dmpDiffs);
+}
+
+export function getPatch(diffs: Diff[]) {
+  const dmpDiffs = diffToDmpDiff(diffs);
+  const dmp = new Dmp();
+  return dmp.patch_make(dmpDiffs);
 }
 
 export function getDiff(

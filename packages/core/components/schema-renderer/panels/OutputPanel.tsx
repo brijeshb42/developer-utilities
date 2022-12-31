@@ -19,11 +19,10 @@ export function OutputPanel({ resultUI }: OutputPanelProps) {
     const inputVal = useAtomValue(panelAtoms[key]);
     inputProps[key] = inputVal;
   });
-  console.log(inputProps);
 
   return (
     <div className="w-full h-full overflow-auto">
-      <Suspense fallback={<LoadingIndicator className="h-4 w-4" />}>
+      <Suspense fallback={<LoadingIndicator className="h-12 w-12" />}>
         {Component ? <Component {...inputProps} /> : null}
       </Suspense>
     </div>

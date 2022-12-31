@@ -2,18 +2,13 @@ import { useCallback, useRef } from "react";
 import debounce from "lodash/debounce";
 import clsx from "clsx";
 import { DiffToken, OutputFormat } from "./DiffToken";
-
-export type Change = {
-  added?: boolean;
-  removed?: boolean;
-  value: string;
-};
+import type { Diff } from "../utils/diff-utils";
 
 export function DiffText({
   changes,
   outputFormat,
 }: {
-  changes: Change[];
+  changes: Diff[];
   outputFormat: OutputFormat;
 }) {
   const clickCount = useRef(0);
