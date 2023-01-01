@@ -40,7 +40,7 @@ export function MainSidebar({
         </a>
       </div>
       <div className="flex flex-grow flex-col px-2">
-        <div className="flex flex-grow flex-col overflow-auto">
+        <div className="flex flex-grow flex-col overflow-auto gap-1">
           {plugins.map((plugin) => (
             <a
               key={plugin.id}
