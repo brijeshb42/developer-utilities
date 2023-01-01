@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --ssrManifest",
     "preview": "vite preview",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
@@ -15,6 +15,7 @@
     "devu-core": "*",
     "devu-diff-checker": "*",
     "devu-json-formatter": "*",
+    "devu-css-minifier": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-split": "^2.0.14"

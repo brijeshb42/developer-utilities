@@ -37,9 +37,11 @@ export function ClipboardProvider({ children }: PropsWithChildren) {
       writePerm: writeSupport,
     }));
 
-    lazyCopy().then((module) => {
-      Clipboard = module;
-    });
+    if (!writeSupport) {
+      lazyCopy().then((module) => {
+        Clipboard = module;
+      });
+    }
   }, []);
 
   const pasteFrom = useCallback(async () => {

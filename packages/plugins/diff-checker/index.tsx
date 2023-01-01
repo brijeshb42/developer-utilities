@@ -9,6 +9,7 @@ const DiffCheckerPlugin: DevUPlugin = {
   category: "other",
   icon: DiffIcon,
   schema: DiffPluginSchema,
+  prefetch: [() => import("./components/DiffResult")],
 };
 
 export default DiffCheckerPlugin;

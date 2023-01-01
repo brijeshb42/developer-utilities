@@ -1,14 +1,20 @@
 import { DevUPlugin, LoadingIndicator, MainSchemaUI } from "devu-core";
+import { prefetch } from "devu-core/prefetch";
 import Split from "react-split";
 import DiffCheckerPlugin from "devu-diff-checker";
 import JsonFormatterPlugin from "devu-json-formatter";
+import CssMinifierPlugin from "devu-css-minifier";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MainSidebar } from "./components/MainSidebar";
 import iconUrl from "./assets/320.png";
 
 const sizes = [20, 80];
 
-const plugins: DevUPlugin[] = [DiffCheckerPlugin, JsonFormatterPlugin];
+const plugins: DevUPlugin[] = [
+  DiffCheckerPlugin,
+  JsonFormatterPlugin,
+  CssMinifierPlugin,
+];
 
 export function App() {
   const initialTitle = useRef("");
@@ -19,6 +25,14 @@ export function App() {
     if (pluginId) {
       setSelectedPluginId(pluginId);
     }
+    requestIdleCallback(() => {
+      plugins.forEach((plugin) => {
+        if (plugin.prefetch?.length) {
+          plugin.prefetch.forEach((item) => item());
+        }
+      });
+      prefetch.forEach((item) => item());
+    });
   }, []);
 
   useEffect(() => {

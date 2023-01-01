@@ -224,7 +224,7 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@codemirror/autocomplete@^6.0.0":
+"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.4.0":
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-6.4.0.tgz#76ac9a2a411a4cc6e13103014dba5e0fe601da5a"
   integrity sha512-HLF2PnZAm1s4kGs30EiqKMgD7XsYaQ0XJnMR0rofEWQ5t5D60SfqpDIkIh1ze5tiEbyUWm8+VJ6W1/erVvBMIA==
@@ -244,7 +244,7 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
 
-"@codemirror/lang-css@^6.0.0":
+"@codemirror/lang-css@^6.0.0", "@codemirror/lang-css@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@codemirror/lang-css/-/lang-css-6.0.1.tgz#470fff614e4cfbbe796ec43103420d59c797dd7a"
   integrity sha512-rlLq1Dt0WJl+2epLQeAsfqIsx3lGu4HStHCJu95nGGuz2P2fNugbU3dQYafr2VRjM4eMC9HviI6jvS98CNtG5w==
@@ -2102,6 +2102,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+lightningcss-wasm@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/lightningcss-wasm/-/lightningcss-wasm-1.17.1.tgz#129d10f743a217f25edcae44546faf847bd0837d"
+  integrity sha512-srJqZu2Xlviq6wipA/cbgZuxXifqbJm5VL5FIH3jCSSiL1RdXdTOq96coILuCsq5h+rm00nzKP11gTHdV3O4Ig==
 
 lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"

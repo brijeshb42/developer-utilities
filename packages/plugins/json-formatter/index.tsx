@@ -9,6 +9,7 @@ const DiffCheckerPlugin: DevUPlugin = {
   category: "formatter",
   icon: JsonIcon,
   schema: DiffPluginSchema,
+  prefetch: [() => import("./utils/json-output")],
 };
 
 export default DiffCheckerPlugin;

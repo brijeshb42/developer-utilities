@@ -23,4 +23,5 @@ export interface DevUPlugin {
   icon: ComponentType<ComponentProps<"svg">>;
   load?: Parameters<typeof lazy>[0];
   schema?: Schema;
+  prefetch?: Array<() => Promise<unknown>>;
 }

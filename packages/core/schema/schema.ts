@@ -58,11 +58,12 @@ export type RadioGroup = {
   options: Option[];
 };
 
-export type Checkbox = {
-  type: "checkbox";
+export type Toggle = {
+  type: "toggle";
   id: string;
   initialValue: boolean;
-} & Option;
+  label: Text;
+};
 
 export type CheckboxGroup = {
   type: "checkboxgroup";
@@ -71,7 +72,7 @@ export type CheckboxGroup = {
   options: Option[];
 };
 
-export type ToolbarItem = Button | RadioGroup | Checkbox | CheckboxGroup;
+export type ToolbarItem = Button | RadioGroup | Toggle | CheckboxGroup;
 
 export type Toolbar = {
   hasSeparator?: boolean;
@@ -104,7 +105,7 @@ export type Textarea = {
   autoFocus?: boolean;
 };
 
-export type LanguageName = "json" | "javascript" | "typescript";
+export type LanguageName = "json" | "javascript" | "typescript" | "css";
 
 export type CodeEditor = {
   type: "code";
