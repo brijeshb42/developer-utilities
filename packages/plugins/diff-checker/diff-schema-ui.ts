@@ -1,7 +1,8 @@
 import { Schema } from "devu-core/schema/schema";
+import { pluginId } from "./diff-checker-plugin-utils";
 
 export const DiffPluginSchema: Schema = {
-  id: "diff-checker",
+  id: pluginId,
   inputs: {
     input1: {
       id: "input1",

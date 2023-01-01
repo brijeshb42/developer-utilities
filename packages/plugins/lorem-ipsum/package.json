@@ -1,0 +1,13 @@
+{
+  "name": "devu-lorem-ipsum",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "devu-core": "*",
+    "lorem-ipsum": "^2.0.8",
+    "react": "^18.2.0"
+  },
+  "scripts": {
+    "lint": "TIMING=1 eslint \"**/*.ts*\""
+  }
+}

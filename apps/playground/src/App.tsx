@@ -5,6 +5,7 @@ import { PanelGroup, Panel } from "react-resizable-panels";
 import DiffCheckerPlugin from "devu-diff-checker";
 import JsonFormatterPlugin from "devu-json-formatter";
 import CssMinifierPlugin from "devu-css-minifier";
+import LoremIpsumPlugin from "devu-lorem-ipsum";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MainSidebar } from "./components/MainSidebar";
 import iconUrl from "./assets/320.png";
@@ -15,6 +16,7 @@ const plugins: DevUPlugin[] = [
   DiffCheckerPlugin,
   JsonFormatterPlugin,
   CssMinifierPlugin,
+  LoremIpsumPlugin,
 ];
 
 if (!import.meta.env.SSR) {

@@ -105,7 +105,12 @@ export type Textarea = {
   autoFocus?: boolean;
 };
 
-export type LanguageName = "json" | "javascript" | "typescript" | "css";
+export type LanguageName =
+  | "json"
+  | "javascript"
+  | "typescript"
+  | "css"
+  | "html";
 
 export type CodeEditor = {
   type: "code";

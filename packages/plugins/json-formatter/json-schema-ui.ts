@@ -1,8 +1,9 @@
 import { Schema } from "devu-core/schema/schema";
+import { pluginId } from "./json-formatter-plugin-utils";
 import { InputParams } from "./utils/json-output";
 
-export const DiffPluginSchema: Schema = {
-  id: "diff-checker",
+export const JsonFormatterPluginSchema: Schema = {
+  id: pluginId,
   inputs: {
     input1: {
       id: "input",

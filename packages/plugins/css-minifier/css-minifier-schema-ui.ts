@@ -1,8 +1,9 @@
 import { Schema } from "devu-core/schema/schema";
+import { pluginId } from "./css-minifier-plugin-utils";
 import type { InputParams } from "./utils/css-minifier";
 
 export const CssMinifierPluginSchema: Schema = {
-  id: "diff-checker",
+  id: pluginId,
   inputs: {
     input1: {
       id: "input",

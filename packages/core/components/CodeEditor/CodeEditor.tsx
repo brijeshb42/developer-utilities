@@ -98,13 +98,32 @@ async function loadLanguage(
       return [json(), linter(jsonParseLinter()), lintGutter()];
     }
     case "css": {
-      const { autocompletion } = await import("@codemirror/autocomplete");
-      const { css, cssCompletionSource } = await import("@codemirror/lang-css");
+      const [{ autocompletion }, { css, cssCompletionSource }] =
+        await Promise.all([
+          import("@codemirror/autocomplete"),
+          import("@codemirror/lang-css"),
+        ]);
       return [
         autocompletion({
           override: [cssCompletionSource],
         }),
         css(),
+      ];
+    }
+    case "html": {
+      const [
+        { autocompletion },
+        { autoCloseTags, html, htmlCompletionSource },
+      ] = await Promise.all([
+        import("@codemirror/autocomplete"),
+        import("@codemirror/lang-html"),
+      ]);
+      return [
+        autocompletion({
+          override: [htmlCompletionSource],
+        }),
+        html(),
+        autoCloseTags,
       ];
     }
     default:
