@@ -1,7 +1,7 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useClipboard } from "../../../providers/ClipboardContext";
 import type {
   Button as ButtonProps,
@@ -155,14 +155,36 @@ function SwapButton({ action, ...rest }: SwapButtonProps) {
 function CopyButton({ action, ...rest }: CopyButtonProps) {
   const { pasteTo, supportData } = useClipboard();
   const { atoms } = useInput();
+  const [copyState, setCopyState] = useState<"init" | "copied" | "not-copied">(
+    "init"
+  );
   const value = useAtomValue(atoms[action.inputId]);
   const handleCopy = useCallback(async () => {
-    pasteTo?.(value);
+    const wasCopied = await pasteTo?.(value);
+    if (wasCopied) {
+      setCopyState("copied");
+    } else {
+      setCopyState("not-copied");
+    }
   }, [value]);
+
+  useEffect(() => {
+    let id: ReturnType<typeof setTimeout>;
+    if (copyState !== "init") {
+      id = setTimeout(() => setCopyState("init"), 3000);
+    }
+    return () => {
+      if (id) {
+        clearTimeout(id);
+      }
+    };
+  }, [copyState]);
+  const copyText = copyState === "not-copied" ? "Not copied" : "Copy";
 
   return (
     <BaseButton
       {...useButtonProps(rest)}
+      label={copyState === "copied" ? "Copied" : copyText}
       disabled={!value || !supportData.writeSupported}
       onClick={handleCopy}
     />

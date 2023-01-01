@@ -94,6 +94,7 @@ export function ClipboardProvider({ children }: PropsWithChildren) {
       });
       if (Clipboard) {
         Clipboard.default.copy(text);
+        return true;
       }
       return false;
     }
