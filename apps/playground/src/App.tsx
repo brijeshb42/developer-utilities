@@ -1,6 +1,7 @@
 import { DevUPlugin, LoadingIndicator, MainSchemaUI } from "devu-core";
 import { prefetch } from "devu-core/prefetch";
-import Split from "react-split";
+import { ResizeHandle } from "devu-core/components/ResizeHandle";
+import { PanelGroup, Panel } from "react-resizable-panels";
 import DiffCheckerPlugin from "devu-diff-checker";
 import JsonFormatterPlugin from "devu-json-formatter";
 import CssMinifierPlugin from "devu-css-minifier";
@@ -16,6 +17,17 @@ const plugins: DevUPlugin[] = [
   CssMinifierPlugin,
 ];
 
+if (!import.meta.env.SSR) {
+  requestIdleCallback(() => {
+    plugins.forEach((plugin) => {
+      if (plugin.prefetch?.length) {
+        plugin.prefetch.forEach((item) => item());
+      }
+    });
+    prefetch.forEach((item) => item());
+  });
+}
+
 export function App() {
   const initialTitle = useRef("");
   const [selectedPluginId, setSelectedPluginId] = useState("");
@@ -25,14 +37,6 @@ export function App() {
     if (pluginId) {
       setSelectedPluginId(pluginId);
     }
-    requestIdleCallback(() => {
-      plugins.forEach((plugin) => {
-        if (plugin.prefetch?.length) {
-          plugin.prefetch.forEach((item) => item());
-        }
-      });
-      prefetch.forEach((item) => item());
-    });
   }, []);
 
   useEffect(() => {
@@ -67,22 +71,23 @@ export function App() {
   ) : null;
 
   return (
-    <Split gutterSize={2} sizes={sizes} className="flex h-screen w-screen">
-      <div className="h-full overflow-hidden">
+    <PanelGroup className="flex h-screen w-screen group" direction="horizontal">
+      <Panel defaultSize={sizes[0]} className="h-full w-full">
         <MainSidebar
           iconUrl={iconUrl}
           selectedPluginId={selectedPluginId}
           plugins={plugins}
           setSelectedPluginId={setSelectedPluginId}
         />
-      </div>
-      <div className="h-full w-full p-2">
+      </Panel>
+      <ResizeHandle />
+      <Panel className="p-2">
         <div className="h-full border border-dashed dark:border-gray-600 rounded-sm">
           <Suspense fallback={<LoadingIndicator />}>
             {PluginComponent ? <PluginComponent /> : element}
           </Suspense>
         </div>
-      </div>
-    </Split>
+      </Panel>
+    </PanelGroup>
   );
 }

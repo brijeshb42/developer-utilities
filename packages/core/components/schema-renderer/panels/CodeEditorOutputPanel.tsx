@@ -30,15 +30,13 @@ export function CodeEditorOutputPanel({
       (inp: unknown) => {
         getOutput(inp)
           .then((out) => {
-            console.log({ out });
             if (!isMounted.current) {
               return;
             }
             setOutput(out);
             setIsLoading(false);
           })
-          .catch((ex) => {
-            console.log({ ex });
+          .catch(() => {
             if (!isMounted.current) {
               return;
             }

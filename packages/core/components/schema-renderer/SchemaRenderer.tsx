@@ -1,34 +1,55 @@
-import clsx from "clsx";
-import Split from "react-split";
+import { Fragment } from "react";
+import { PanelGroup, Panel } from "react-resizable-panels";
 import { Schema } from "../../schema/schema";
 import { PanelComponent } from "./PanelComponent";
+import { ResizeHandle } from "../ResizeHandle";
 
 type SchemaRendererProps = Omit<Schema, "inputs" | "id" | "outputs">;
 
-function LayoutRenderer({ layout, panels }: SchemaRendererProps) {
-  const className = clsx("flex h-full", {
-    "flex-col": layout.orientation === "vertical",
-  });
-
+function LayoutRenderer({ layout, panels, ...rest }: SchemaRendererProps) {
   return (
-    <Split
-      sizes={layout.initialSizes}
-      gutterSize={7}
-      className={className}
-      direction={layout.orientation}
-    >
+    <PanelGroup direction={layout.orientation} {...rest}>
       {layout.items.map((item, index) => {
         if (typeof item === "string") {
           const panelProps = panels[item];
           if (!panelProps) {
             return null;
           }
-          return <PanelComponent key={item} panelId={item} {...panelProps} />;
+          const element = (
+            <Panel key={item}>
+              <PanelComponent panelId={item} {...panelProps} />
+            </Panel>
+          );
+          if (index === layout.items.length - 1) {
+            return element;
+          }
+          return (
+            <Fragment key={item}>
+              {element}
+              <ResizeHandle />
+            </Fragment>
+          );
         }
-        // eslint-disable-next-line react/no-array-index-key
-        return <LayoutRenderer key={index} layout={item} panels={panels} />;
+        const element = (
+          // eslint-disable-next-line react/no-array-index-key
+          <Panel key={index}>
+            <LayoutRenderer layout={item} panels={panels} />
+          </Panel>
+        );
+
+        if (index === layout.items.length - 1) {
+          return element;
+        }
+
+        return (
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
+            {element}
+            <ResizeHandle />
+          </Fragment>
+        );
       })}
-    </Split>
+    </PanelGroup>
   );
 }
 
