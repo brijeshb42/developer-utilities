@@ -16,9 +16,7 @@ function PanelContent(props: PanelProps) {
   const { title, toolbar, style, type, panelId } = props;
   return (
     <div className="flex h-full w-full flex-col p-2" style={style}>
-      {!!toolbar.items.length && (
-        <PanelToolbar panelId={panelId} title={title} {...toolbar} />
-      )}
+      <PanelToolbar panelId={panelId} title={title} {...toolbar} />
       <Suspense fallback={<LoadingIndicator className="h-4 w-4" />}>
         {type === "input" ? (
           <InputPanel {...props} />

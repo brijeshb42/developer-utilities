@@ -19,6 +19,7 @@ export const DiffPluginSchema: Schema = {
       initialValue: "",
     },
   },
+  outputs: {},
   panels: {
     input1: {
       title: {
@@ -120,6 +121,7 @@ export const DiffPluginSchema: Schema = {
             type: "radiogroup",
             id: "outputFormat",
             initialValue: "raw",
+            variant: "buttongroup",
             options: [
               {
                 label: "Text",

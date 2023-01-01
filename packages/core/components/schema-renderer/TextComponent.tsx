@@ -6,16 +6,19 @@ export function TextComponent({
   text,
   as,
   className,
+  id,
 }: {
   text: Text;
   as: ElementType;
   className?: string;
+  id?: string;
 }) {
   if (typeof text === "string") {
     return createElement(
       as,
       {
         className,
+        id,
       },
       text
     );
@@ -38,6 +41,7 @@ export function TextComponent({
         "font-bold": bold,
         italic,
       })}
+      id={id}
       htmlFor={htmlFor}
     >
       {textStr}

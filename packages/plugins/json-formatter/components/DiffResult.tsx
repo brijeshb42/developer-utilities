@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RpcWorker, toWorker } from "devu-utils/worker-utils/main-thread";
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import {
   LoadingIndicator,
   ToolbarLeftRenderer,

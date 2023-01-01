@@ -3,7 +3,7 @@ import Split from "react-split";
 import { Schema } from "../../schema/schema";
 import { PanelComponent } from "./PanelComponent";
 
-type SchemaRendererProps = Omit<Schema, "inputs" | "id">;
+type SchemaRendererProps = Omit<Schema, "inputs" | "id" | "outputs">;
 
 function LayoutRenderer({ layout, panels }: SchemaRendererProps) {
   const className = clsx("flex h-full", {
@@ -11,7 +11,12 @@ function LayoutRenderer({ layout, panels }: SchemaRendererProps) {
   });
 
   return (
-    <Split gutterSize={7} className={className} direction={layout.orientation}>
+    <Split
+      sizes={layout.initialSizes}
+      gutterSize={7}
+      className={className}
+      direction={layout.orientation}
+    >
       {layout.items.map((item, index) => {
         if (typeof item === "string") {
           const panelProps = panels[item];

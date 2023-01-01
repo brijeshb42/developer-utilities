@@ -1,21 +1,22 @@
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { ChangeEvent, useCallback } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Textarea as BaseTextAreaProps } from "../../../schema/schema";
+import { useDarkMode } from "usehooks-ts";
+import { CodeEditor as BaseCodeEditorProps } from "../../../schema/schema";
 import { useInput } from "../input-context";
+import { CodeEditor } from "../../CodeEditor/CodeEditor";
 
-type TextareInputPanelProps = BaseTextAreaProps & {
+type CodeEditorInputPanelProps = BaseCodeEditorProps & {
   inputId: string;
 };
 
-export function TextareInputPanel({
-  placeholder,
-  autoFocus,
-  id,
+export function CodeEditorInputPanel({
+  // id,
   inputId,
   dropMimeType,
-}: TextareInputPanelProps) {
+  ...rest
+}: CodeEditorInputPanelProps) {
   const { atoms } = useInput();
   const [value, setValue] = useAtom(atoms[inputId]);
   const handleDrop = useCallback(
@@ -33,16 +34,11 @@ export function TextareInputPanel({
     noClick: !!value,
     onDrop: handleDrop,
   });
-  const handleChange = useCallback(
-    (ev: ChangeEvent<HTMLTextAreaElement>) => {
-      setValue(ev.target.value);
-    },
-    [setValue]
-  );
+  const { isDarkMode } = useDarkMode();
 
   return (
     <div
-      className={clsx("w-full h-full mt-2", {
+      className={clsx("w-full h-full mt-2 overflow-auto", {
         "animate-pulse": isDragActive,
       })}
       {...getRootProps()}
@@ -51,16 +47,14 @@ export function TextareInputPanel({
         title="File chooser"
         {...getInputProps({
           accept: dropMimeType,
+          multiple: false,
         })}
       />
-      <textarea
-        id={id}
-        placeholder={placeholder}
-        className="textarea textarea-bordered w-full h-full resize-none rounded-sm font-mono dark:text-white"
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus={autoFocus}
+      <CodeEditor
+        theme={isDarkMode ? "dark" : "light"}
         value={value}
-        onChange={handleChange}
+        onChange={setValue}
+        {...rest}
       />
     </div>
   );

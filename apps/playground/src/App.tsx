@@ -1,13 +1,14 @@
 import { DevUPlugin, LoadingIndicator, MainSchemaUI } from "devu-core";
 import Split from "react-split";
 import DiffCheckerPlugin from "devu-diff-checker";
+import JsonFormatterPlugin from "devu-json-formatter";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MainSidebar } from "./components/MainSidebar";
 import iconUrl from "./assets/320.png";
 
 const sizes = [20, 80];
 
-const plugins: DevUPlugin[] = [DiffCheckerPlugin];
+const plugins: DevUPlugin[] = [DiffCheckerPlugin, JsonFormatterPlugin];
 
 export function App() {
   const initialTitle = useRef("");

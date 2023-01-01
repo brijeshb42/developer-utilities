@@ -7,10 +7,10 @@ type MainSchemaUIProps = {
 };
 
 export function MainSchemaUI({ schema }: MainSchemaUIProps) {
-  const { inputs, layout, panels, id } = schema;
+  const { inputs, layout, panels, id, outputs } = schema;
 
   return (
-    <InputProvider baseId={id} inputs={inputs}>
+    <InputProvider baseId={id} inputs={inputs} outputs={outputs}>
       <SchemaRenderer layout={layout} panels={panels} />
     </InputProvider>
   );

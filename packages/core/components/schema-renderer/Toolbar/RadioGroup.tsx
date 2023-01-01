@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { ChangeEvent, useCallback, MouseEvent } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { Option, RadioGroup as RadioGroupProps } from "../../../schema/schema";
 import { usePanelInput } from "../panel-input-context";
 import { TextComponent } from "../TextComponent";
@@ -48,28 +48,21 @@ function RadioVariant({
 }
 
 function ButtonVariant({
+  labelId,
   options,
   value,
   onChange,
 }: {
+  labelId?: string;
   value: string;
   options: Option[];
   onChange: (newValue: string) => void;
 }) {
-  const handleBtnClick = useCallback(
-    (ev: MouseEvent<HTMLButtonElement>) => {
-      const data = (ev.target as HTMLButtonElement).dataset;
-      onChange(data.value as string);
-    },
-    [onChange]
-  );
-
   return (
-    <div className="btn-group" role="radiogroup">
+    <div className="btn-group" role="radiogroup" aria-describedby={labelId}>
       {options.map((opt) => (
         <button
           key={opt.value}
-          data-value={opt.value}
           type="button"
           role="radio"
           aria-checked={opt.value === value}
@@ -79,7 +72,7 @@ function ButtonVariant({
           aria-label={
             typeof opt.label === "string" ? opt.label : opt.label.text
           }
-          onClick={handleBtnClick}
+          onClick={() => onChange(opt.value)}
         >
           <TextComponent text={opt.label} as="span" />
         </button>
@@ -105,7 +98,12 @@ export function RadioGroup({
 
   return (
     <div className="flex items-center gap-2">
-      <TextComponent text={title} as="span" className="pl-2" />
+      <TextComponent
+        id={`label-${id}`}
+        text={title}
+        as="span"
+        className="pl-2"
+      />
       {variant === "radio" ? (
         <RadioVariant
           id={id}
@@ -115,6 +113,7 @@ export function RadioGroup({
         />
       ) : (
         <ButtonVariant
+          labelId={`label-${id}`}
           options={options}
           value={value as string}
           onChange={handleChange}

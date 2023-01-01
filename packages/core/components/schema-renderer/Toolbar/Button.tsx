@@ -1,11 +1,12 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import clsx from "clsx";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback } from "react";
 import { useClipboard } from "../../../providers/ClipboardContext";
 import type {
   Button as ButtonProps,
   ClearAction,
+  CopyAction,
   Icon,
   PasteAction,
   SwapAction,
@@ -59,6 +60,10 @@ type ClearButtonProps = ButtonProps & {
 
 type SwapButtonProps = ButtonProps & {
   action: SwapAction;
+};
+
+type CopyButtonProps = ButtonProps & {
+  action: CopyAction;
 };
 
 function BaseButton({
@@ -147,6 +152,23 @@ function SwapButton({ action, ...rest }: SwapButtonProps) {
   );
 }
 
+function CopyButton({ action, ...rest }: CopyButtonProps) {
+  const { pasteTo, supportData } = useClipboard();
+  const { atoms } = useInput();
+  const value = useAtomValue(atoms[action.inputId]);
+  const handleCopy = useCallback(async () => {
+    pasteTo?.(value);
+  }, [value]);
+
+  return (
+    <BaseButton
+      {...useButtonProps(rest)}
+      disabled={!value || !supportData.writeSupported}
+      onClick={handleCopy}
+    />
+  );
+}
+
 export function Button(props: ButtonProps) {
   const { action } = props;
   switch (action?.type) {
@@ -156,6 +178,8 @@ export function Button(props: ButtonProps) {
       return <ClearButton {...props} action={action} />;
     case "swap":
       return <SwapButton {...props} action={action} />;
+    case "copy":
+      return <CopyButton {...props} action={action} />;
     default:
       return null;
   }

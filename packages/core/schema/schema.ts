@@ -33,8 +33,12 @@ export type SwapAction = {
   type: "swap";
   between: [string, string];
 };
+export type CopyAction = {
+  type: "copy";
+  inputId: string;
+};
 
-export type Action = ClearAction | PasteAction | SwapAction;
+export type Action = ClearAction | PasteAction | SwapAction | CopyAction;
 
 export type Button = {
   type: "button";
@@ -47,7 +51,7 @@ export type Button = {
 
 export type RadioGroup = {
   type: "radiogroup";
-  variant?: "radio" | "buttongroup";
+  variant?: "radio" | "buttongroup" | "select";
   title: Text;
   id: string;
   initialValue: string;
@@ -85,6 +89,7 @@ export type OutputPanel = {
   type: "output";
   title: Text;
   toolbar: Toolbar;
+  outputId?: string;
   resultUI?: Parameters<typeof lazy>[0];
 };
 
@@ -99,23 +104,58 @@ export type Textarea = {
   autoFocus?: boolean;
 };
 
+export type LanguageName = "json" | "javascript" | "typescript";
+
 export type CodeEditor = {
   type: "code";
   id: string;
-  language?: string;
+  language?: LanguageName;
   initialValue: string;
+  placeholder?: string;
+  autoFocus?: boolean;
+  dropMimeType?: string;
+  showLineNumbers?: boolean;
+  fontSize?: number;
+  wrapLines?: boolean;
+  showLint?: boolean;
+  editable?: boolean;
 };
 
 export type Input = Textarea | CodeEditor;
 
+export type TextAreaOutput = {
+  type: "textarea";
+  id: string;
+  placeholder?: string;
+  dropMimeType?: string;
+};
+
+export type CodeEditorOutput = {
+  type: "code";
+  id: string;
+  language?: LanguageName;
+  placeholder?: string;
+  autoFocus?: boolean;
+  showLineNumbers?: boolean;
+  fontSize?: number;
+  wrapLines?: boolean;
+  editable?: boolean;
+  showLint?: boolean;
+  getOutput: (input: unknown) => Promise<string>;
+};
+
+export type Output = TextAreaOutput | CodeEditorOutput;
+
 export type Layout = {
   orientation: Orientation;
+  initialSizes?: number[];
   items: Array<string | Layout>;
 };
 
 export type Schema = {
   id: string;
   inputs: Record<string, Input>;
+  outputs: Record<string, Output>;
   panels: Record<string, Panel>;
   layout: Layout;
 };
