@@ -31,7 +31,6 @@ export function useBeforeInstall() {
     function handleBeforeInstall(ev: Event) {
       const event = ev as BeforeInstallPromptEvent;
       event.preventDefault();
-      event.userChoice.then((e) => console.log({ e }));
       setDeferredPrompt(event);
     }
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
