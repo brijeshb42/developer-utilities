@@ -2,8 +2,10 @@ import { atom, PrimitiveAtom } from "jotai";
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { ToolbarItem } from "../../schema/schema";
 
+export type InputType = string | boolean | string[] | number;
+
 export const PanelInputContext = createContext<
-  Record<string, PrimitiveAtom<string | boolean | string[]>>
+  Record<string, PrimitiveAtom<InputType>>
 >({});
 
 export function PanelInputProvider({
@@ -17,7 +19,7 @@ export function PanelInputProvider({
           acc[item.id] = atom(item.initialValue);
         }
         return acc;
-      }, {} as Record<string, PrimitiveAtom<string | boolean | string[]>>),
+      }, {} as Record<string, PrimitiveAtom<InputType>>),
     [items]
   );
 

@@ -72,7 +72,19 @@ export type CheckboxGroup = {
   options: Option[];
 };
 
-export type ToolbarItem = Button | RadioGroup | Toggle | CheckboxGroup;
+export type TextInput = {
+  type: "number" | "text";
+  id: string;
+  initialValue: string | number;
+  title: Text;
+};
+
+export type ToolbarItem =
+  | Button
+  | RadioGroup
+  | Toggle
+  | CheckboxGroup
+  | TextInput;
 
 export type Toolbar = {
   hasSeparator?: boolean;

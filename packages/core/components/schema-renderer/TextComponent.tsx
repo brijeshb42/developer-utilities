@@ -14,6 +14,9 @@ export function TextComponent({
   id?: string;
 }) {
   if (typeof text === "string") {
+    if (!text) {
+      return null;
+    }
     return createElement(
       as,
       {

@@ -183,8 +183,11 @@ function CopyButton({ action, ...rest }: CopyButtonProps) {
 
   return (
     <BaseButton
-      {...useButtonProps(rest)}
-      label={copyState === "copied" ? "Copied" : copyText}
+      {...useButtonProps({
+        ...rest,
+        state: copyState === "copied" ? "success" : rest.state,
+      })}
+      label={copyState === "copied" ? "Done" : copyText}
       disabled={!value || !supportData.writeSupported}
       onClick={handleCopy}
     />

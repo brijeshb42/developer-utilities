@@ -21,5 +21,8 @@
 //   "references": [{ "path": "./tsconfig.node.json" }]
 // }
 {
-  "extends": "tsconfig/vite.json"
+  "extends": "tsconfig/vite.json",
+  "compilerOptions": {
+    "lib": ["WebWorker", "WebWorker.ImportScripts"]
+  }
 }

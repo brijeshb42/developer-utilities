@@ -24,7 +24,8 @@ export function CodeEditorOutputPanel({
   const [output, setOutput] = useAtom(atoms[inputId]);
   const { isDarkMode } = useDarkMode();
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useRef(false);
+  const isMounted = useRef(true);
+
   const debouncer = useRef(
     debounce(
       (inp: unknown) => {
@@ -53,6 +54,7 @@ export function CodeEditorOutputPanel({
   useEffect(() => {
     isMounted.current = true;
     return () => {
+      debouncer.current.cancel();
       isMounted.current = false;
     };
   }, []);

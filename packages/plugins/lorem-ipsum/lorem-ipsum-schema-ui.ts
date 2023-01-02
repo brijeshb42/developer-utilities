@@ -21,10 +21,16 @@ export const LoremIpsumPluginSchema: Schema = {
   },
   panels: {
     output: {
-      title: "Generated lorem ipsum",
+      title: "Generated text",
       type: "output",
       toolbar: {
         items: [
+          {
+            type: "number",
+            initialValue: 10,
+            id: "count",
+            title: "Generate",
+          },
           {
             type: "radiogroup",
             id: "type",
@@ -69,6 +75,7 @@ export const LoremIpsumPluginSchema: Schema = {
               type: "copy",
               inputId: "output",
             },
+            state: "info",
             label: "Copy",
           },
         ],

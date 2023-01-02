@@ -1,6 +1,7 @@
 import { ToolbarItem } from "../../schema/schema";
 import { Button } from "./Toolbar/Button";
 import { RadioGroup } from "./Toolbar/RadioGroup";
+import { TextInput } from "./Toolbar/TextInput";
 import { Toggle } from "./Toolbar/Toggle";
 
 export function ToolbarItemComponent({ item }: { item: ToolbarItem }) {
@@ -11,6 +12,9 @@ export function ToolbarItemComponent({ item }: { item: ToolbarItem }) {
       return <RadioGroup {...item} />;
     case "toggle":
       return <Toggle {...item} />;
+    case "number":
+    case "text":
+      return <TextInput {...item} />;
     default:
       return null;
   }

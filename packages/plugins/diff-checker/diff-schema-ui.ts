@@ -6,18 +6,20 @@ export const DiffPluginSchema: Schema = {
   inputs: {
     input1: {
       id: "input1",
-      type: "textarea",
+      type: "code",
       placeholder: "Paste or drop a file or click to open file choose",
       dropMimeType: "*/*",
       initialValue: "",
       autoFocus: true,
+      fontSize: 18,
     },
     input2: {
       id: "input2",
-      type: "textarea",
+      type: "code",
       placeholder: "Paste or drop a file or click to open file choose",
       dropMimeType: "*/*",
       initialValue: "",
+      fontSize: 18,
     },
   },
   outputs: {},
@@ -52,7 +54,7 @@ export const DiffPluginSchema: Schema = {
           {
             type: "button",
             label: "Swap Inputs",
-            state: "warning",
+            state: "info",
             action: {
               type: "swap",
               between: ["input1", "input2"],

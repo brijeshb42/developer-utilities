@@ -6,7 +6,7 @@ import {
 } from "../../../schema/schema";
 import { LoadingIndicator } from "../../LoadingIndicator";
 import { useInput } from "../input-context";
-import { usePanelInput } from "../panel-input-context";
+import { usePanelInput, InputType } from "../panel-input-context";
 import { CodeEditorOutputPanel } from "./CodeEditorOutputPanel";
 
 export function OutputRenderer({
@@ -44,7 +44,7 @@ export function OutputPanel({ resultUI, outputId }: OutputPanelProps) {
     const inputVal = useAtomValue(atoms[key]);
     acc[key] = inputVal;
     return acc;
-  }, {} as Record<string, string | boolean | string[]>);
+  }, {} as Record<string, InputType>);
 
   Object.keys(panelAtoms).forEach((key) => {
     const inputVal = useAtomValue(panelAtoms[key]);

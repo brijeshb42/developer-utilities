@@ -84,6 +84,7 @@ export const CssMinifierPluginSchema: Schema = {
               type: "copy",
               inputId: "output",
             },
+            state: "info",
             label: "Copy",
           },
         ],

@@ -101,6 +101,7 @@ export const JsonFormatterPluginSchema: Schema = {
               type: "copy",
               inputId: "output",
             },
+            state: "info",
             label: "Copy",
           },
         ],

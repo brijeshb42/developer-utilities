@@ -1,5 +1,5 @@
 import { DevUPlugin, LoadingIndicator, MainSchemaUI } from "devu-core";
-import { prefetch } from "devu-core/prefetch";
+// import { prefetch } from "devu-core/prefetch";
 import { ResizeHandle } from "devu-core/components/ResizeHandle";
 import { PanelGroup, Panel } from "react-resizable-panels";
 import DiffCheckerPlugin from "devu-diff-checker";
@@ -10,7 +10,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MainSidebar } from "./components/MainSidebar";
 import iconUrl from "./assets/320.png";
 
-const sizes = [20, 80];
+const sizes = [15, 80];
 
 const plugins: DevUPlugin[] = [
   DiffCheckerPlugin,
@@ -19,16 +19,16 @@ const plugins: DevUPlugin[] = [
   LoremIpsumPlugin,
 ];
 
-if (!import.meta.env.SSR) {
-  requestIdleCallback(() => {
-    plugins.forEach((plugin) => {
-      if (plugin.prefetch?.length) {
-        plugin.prefetch.forEach((item) => item());
-      }
-    });
-    prefetch.forEach((item) => item());
-  });
-}
+// function preload() {
+//   requestIdleCallback(() => {
+//     plugins.forEach((plugin) => {
+//       if (plugin.prefetch?.length) {
+//         plugin.prefetch.forEach((item) => item());
+//       }
+//     });
+//     prefetch.forEach((item) => item());
+//   });
+// }
 
 export function App() {
   const initialTitle = useRef("");
@@ -39,6 +39,7 @@ export function App() {
     if (pluginId) {
       setSelectedPluginId(pluginId);
     }
+    // preload();
   }, []);
 
   useEffect(() => {
