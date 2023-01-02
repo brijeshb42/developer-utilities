@@ -16,26 +16,34 @@ sw.addEventListener("install", (ev) => {
 
 sw.addEventListener("activate", (ev) => {
   ev.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) =>
-        Promise.all(
-          cacheNames
-            .filter((nm) => nm !== sw.cacheId)
-            .map((nm) => caches.delete(nm))
-        )
-      )
+    (async () => {
+      if ("navigationPreload" in sw.registration) {
+        await sw.registration.navigationPreload.enable();
+      }
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames
+          .filter((nm) => nm !== sw.cacheId)
+          .map((nm) => caches.delete(nm))
+      );
+    })()
   );
+  sw.clients.claim();
 });
 
 sw.addEventListener("fetch", (ev) => {
+  if (ev.request.mode !== "navigate") {
+    return;
+  }
   if (ev.request.method.toLowerCase() !== "get") {
     return;
   }
   ev.respondWith(
     (async () => {
-      const cache = await caches.open(sw.cacheId);
-      const cachedResp = await cache.match(ev.request);
+      if (ev.preloadResponse) {
+        return ev.preloadResponse;
+      }
+      const cachedResp = await caches.match(ev.request);
       if (cachedResp) {
         return cachedResp;
       }
@@ -43,6 +51,7 @@ sw.addEventListener("fetch", (ev) => {
       if (!ev.request.url.startsWith("http")) {
         return resp;
       }
+      const cache = await caches.open(sw.cacheId);
       cache.put(ev.request, resp.clone());
       return resp;
     })()
