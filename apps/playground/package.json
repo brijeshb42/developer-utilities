@@ -13,6 +13,7 @@
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.1.1",
     "clsx": "^1.2.1",
     "daisyui": "^2.46.0",
     "devu-core": "*",

@@ -11,6 +11,7 @@ import DiffCheckerPlugin from "devu-diff-checker";
 import JsonFormatterPlugin from "devu-json-formatter";
 import CssMinifierPlugin from "devu-css-minifier";
 import LoremIpsumPlugin from "devu-lorem-ipsum";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import {
   lazy,
   Suspense,
@@ -109,14 +110,23 @@ export function App() {
   return (
     <div className="flex flex-col h-screen w-screen">
       {deferredPrompt && (
-        <div className="flex flex-shrink gap-4 py-2 items-center justify-center border-b border-dashed">
-          <h2>Install DevU as an App for easy access even when offline</h2>
+        <div className="flex flex-shrink gap-4 py-2 px-4 items-center justify-center border-b border-dashed">
+          <div className="flex flex-grow items-center justify-center gap-4">
+            <h2>Install DevU as an App for easy access even when offline</h2>
+            <button
+              type="button"
+              className="btn btn-xs btn-success"
+              onClick={handleInstall}
+            >
+              Install
+            </button>
+          </div>
           <button
             type="button"
-            className="btn btn-sm btn-success"
-            onClick={handleInstall}
+            className="btn btn-xs btn-circle"
+            onClick={() => setDeferredPrompt(null)}
           >
-            Install
+            <Cross2Icon />
           </button>
         </div>
       )}
