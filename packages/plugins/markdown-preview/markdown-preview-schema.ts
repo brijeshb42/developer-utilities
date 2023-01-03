@@ -24,7 +24,26 @@ export const MarkdownPreviewSchema: Schema = {
       inputId: "input",
       title: "Markdown text",
       toolbar: {
-        items: [],
+        items: [
+          {
+            type: "button",
+            action: {
+              type: "paste",
+              inputId: "input",
+            },
+            label: "Paste",
+          },
+          {
+            type: "button",
+            action: {
+              type: "clear",
+              inputId: "input",
+            },
+            label: "Clear",
+            icon: "cross",
+            onlyIcon: true,
+          },
+        ],
       },
     },
     output: {
