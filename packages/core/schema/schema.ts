@@ -122,7 +122,8 @@ export type LanguageName =
   | "javascript"
   | "typescript"
   | "css"
-  | "html";
+  | "html"
+  | "markdown";
 
 export type CodeEditor = {
   type: "code";

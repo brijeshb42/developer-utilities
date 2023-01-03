@@ -11,6 +11,7 @@ import DiffCheckerPlugin from "devu-diff-checker";
 import JsonFormatterPlugin from "devu-json-formatter";
 import CssMinifierPlugin from "devu-css-minifier";
 import LoremIpsumPlugin from "devu-lorem-ipsum";
+import MarkdownPreviewPlugin from "devu-markdown-preview";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import {
   lazy,
@@ -32,6 +33,7 @@ const plugins: DevUPlugin[] = [
   JsonFormatterPlugin,
   CssMinifierPlugin,
   LoremIpsumPlugin,
+  MarkdownPreviewPlugin,
 ];
 
 function preload() {

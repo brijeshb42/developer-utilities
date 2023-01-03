@@ -126,6 +126,21 @@ async function loadLanguage(
         autoCloseTags,
       ];
     }
+    case "markdown": {
+      const { markdown, markdownLanguage } = await import(
+        "@codemirror/lang-markdown"
+      );
+      return [
+        markdown({
+          addKeymap: true,
+          codeLanguages: (info: string) => {
+            console.log({ info });
+            return null;
+          },
+          defaultCodeLanguage: markdownLanguage,
+        }),
+      ];
+    }
     default:
       return [];
   }

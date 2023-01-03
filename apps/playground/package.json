@@ -21,11 +21,13 @@
     "devu-diff-checker": "*",
     "devu-json-formatter": "*",
     "devu-lorem-ipsum": "*",
+    "devu-markdown-preview": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.26"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.8",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.0.0",

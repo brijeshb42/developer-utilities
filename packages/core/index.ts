@@ -10,3 +10,4 @@ export {
   ToolbarLeftRenderer,
   ToolbarRightRenderer,
 } from "./components/schema-renderer/ToolbarPortalRenderer";
+export { CodeEditor } from "./components/CodeEditor/CodeEditor";
