@@ -24,7 +24,7 @@
     "devu-markdown-preview": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-resizable-panels": "^0.0.26"
+    "react-resizable-panels": "^0.0.33"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.8",

@@ -3932,10 +3932,10 @@ react-refresh@^0.14.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
-react-resizable-panels@^0.0.26:
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/react-resizable-panels/-/react-resizable-panels-0.0.26.tgz#45c62304e9bb8f182fc03763259acc19aa6e8a18"
-  integrity sha512-aQteQNPNW/voUA5sm+Zg4VoPiQp4C+vaLUOycMrblGqoGVklIo7Sgsbbtd19/u1aW/b1XouxYyUxQnEOKKxCLQ==
+react-resizable-panels@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/react-resizable-panels/-/react-resizable-panels-0.0.33.tgz#7bf1419c7d0201b55ccf1aa367fedc8e902cb9b7"
+  integrity sha512-j1tALhVb/HqCMTGzCA7Kf5uLj3cVCmWvFWEOFW90X22qGWajZ+FXCISevaPOFzFHaEpn2AF1LB+xApOFSdQv4w==
 
 react@^18.2.0:
   version "18.2.0"

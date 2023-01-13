@@ -39,6 +39,22 @@
       name="description"
       content="GUI interface to utilities used by developers almost everyday."
     />
+    <style>
+      .pre-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .pre-loader {
+          color: white;
+          background-color: rgb(42, 48, 60);
+        }
+      }
+    </style>
     <!--pwa manifest-->
     <!--hydrate global-->
     <!--preload-links-->
@@ -47,15 +63,7 @@
   <body class="h-full w-full">
     <div id="root" class="h-full w-full">
       <!--ssr-outlet-start-->
-      <div
-        style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          font-family: 'Courier New', Courier, monospace;
-        "
-      >
+      <div class="pre-loader">
         <p style="font-weight: bold">Loading...</p>
       </div>
       <!--ssr-outlet-end-->
